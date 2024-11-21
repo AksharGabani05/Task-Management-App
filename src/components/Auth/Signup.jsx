@@ -8,7 +8,6 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -19,19 +18,23 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+    // Validate that password is not empty
+    if (!formData.password) {
+      toast.error("Password cannot be empty!");
       return;
     }
 
+    // Retrieve users from localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const isEmailTaken = users.some((user) => user.email === formData.email);
 
+    // Check if email is already registered
     if (isEmailTaken) {
       toast.error("Email already registered!");
       return;
     }
 
+    // Add new user to the list and save to localStorage
     users.push({
       email: formData.email,
       password: formData.password,
@@ -69,7 +72,6 @@ const Signup = () => {
             required
             className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
-          
           <button
             type="submit"
             className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
