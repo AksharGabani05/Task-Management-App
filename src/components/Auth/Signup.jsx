@@ -5,8 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,29 +18,28 @@ const Signup = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = users.some((user) => user.email === formData.email);
+    const isEmailTaken = users.some((user) => user.email === formData.email);
 
-    if (userExists) {
-      setError("This email is already in use. Please login.");
-      toast.error("This email is already in use.");
+    if (isEmailTaken) {
+      toast.error("Email already registered!");
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      toast.error("Password must be at least 6 characters.");
-      return;
-    }
+    users.push({
+      email: formData.email,
+      password: formData.password,
+    });
 
-    users.push(formData);
     localStorage.setItem("users", JSON.stringify(users));
-
-    // Show success toast
     toast.success("Signup successful!", {
-      onClose: () => navigate("/login"), // Redirect after toast closes
+      onClose: () => navigate("/login"), // Redirect to login page after success
     });
   };
 
@@ -48,7 +50,6 @@ const Signup = () => {
         <h1 className="text-3xl font-semibold text-center text-blue-700 mb-6">
           Create an Account
         </h1>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSignup} className="space-y-4">
           <input
             type="email"
@@ -68,6 +69,7 @@ const Signup = () => {
             required
             className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
+          
           <button
             type="submit"
             className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
@@ -77,7 +79,14 @@ const Signup = () => {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Already have an account?{" "}
-          <a href="/" className="text-blue-600 hover:underline">
+          <a
+            href="/login"
+            className="text-blue-600 hover:underline"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/login");
+            }}
+          >
             Login here
           </a>
         </p>

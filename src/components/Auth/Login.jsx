@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,25 +7,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-
-  // Add default admin credentials to localStorage on component mount
-  useEffect(() => {
-    const defaultAdmin = {
-      email: "admin@gmail.com",
-      password: "admin123",
-      role: "admin", // Optionally include a role for admin
-    };
-
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const isAdminExists = users.some(
-      (user) => user.email === defaultAdmin.email
-    );
-
-    if (!isAdminExists) {
-      users.push(defaultAdmin);
-      localStorage.setItem("users", JSON.stringify(users));
-    }
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,9 +28,6 @@ const Login = () => {
       toast.error("Invalid email or password.");
       return;
     }
-
-    // Save logged-in user details in localStorage
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
 
     // Show success toast and redirect
     toast.success("Login successful!", {
@@ -93,8 +71,15 @@ const Login = () => {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Don't have an account?{" "}
-          <a href="/signup" className="text-red-600 hover:underline">
-            Sign up here
+          <a
+            href="/"
+            className="text-red-600 hover:underline"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/"); // Navigate to the register page
+            }}
+          >
+            Register here
           </a>
         </p>
       </div>
