@@ -1,90 +1,83 @@
 import React, { useState } from "react";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../../firebase";
-import { toast } from "react-toastify"; // Import toast from react-toastify
-import "react-toastify/dist/ReactToastify.css"; // Import the toast styles
-import { FaGoogle } from "react-icons/fa"; // Import Google icon
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  const handleGoogleSignup = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-      toast.success("Signup successful with Google!"); // Success toast after Google signup
-      navigate("/todo");
-    } catch (error) {
-      console.error("Google signup failed:", error);
-      setError("Google signup failed. Please try again.");
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleEmailSignup = async (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
     setError("");
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("Signup successful!"); // Success toast after email signup
-      navigate("/todo");
-    } catch (error) {
-      console.error("Email signup failed:", error);
-      setError("An error occurred during signup. Please try again.");
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userExists = users.some((user) => user.email === formData.email);
+
+    if (userExists) {
+      setError("This email is already in use. Please login.");
+      toast.error("This email is already in use.");
+      return;
     }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+
+    users.push(formData);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Show success toast
+    toast.success("Signup successful!", {
+      onClose: () => navigate("/login"), // Redirect after toast closes
+    });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-500 to-blue-600">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="p-8 bg-white shadow-lg rounded-lg w-full sm:w-96">
-        <h1 className="text-3xl font-semibold text-center text-indigo-700 mb-6">Create an Account</h1>
+        <h1 className="text-3xl font-semibold text-center text-blue-700 mb-6">
+          Create an Account
+        </h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        
-        <form onSubmit={handleEmailSignup} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-4">
           <input
             type="email"
+            name="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
-            className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
           <input
             type="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
-            className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-md w-full focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
           <button
             type="submit"
-            className="bg-indigo-600 text-white px-6 py-3 rounded-md w-full hover:bg-indigo-700 transition"
+            className="bg-blue-600 text-white px-6 py-3 rounded-md w-full hover:bg-blue-700 transition"
           >
-            Sign Up with Email
+            Sign Up
           </button>
         </form>
-
-        <div className="flex items-center my-4">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-2 text-gray-600">OR</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-
-        <button
-          onClick={handleGoogleSignup}
-          className="bg-blue-500 text-white px-6 py-3 rounded-md flex items-center justify-center w-full hover:bg-blue-600 transition"
-        >
-          <FaGoogle className="mr-2" /> Sign Up with Google
-        </button>
-
         <p className="mt-4 text-center text-gray-600">
           Already have an account?{" "}
-          <a href="/" className="text-indigo-600 hover:underline">
+          <a href="/" className="text-blue-600 hover:underline">
             Login here
           </a>
         </p>
