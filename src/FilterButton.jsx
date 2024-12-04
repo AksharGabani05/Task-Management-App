@@ -11,7 +11,7 @@ const FilterButton = () => {
 
   return (
     <div className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-lg">
-      {/* Dropdown for filter */}
+     
       <select
         value={currentFilter}
         onChange={(e) => handleFilter(e.target.value)}
@@ -22,7 +22,7 @@ const FilterButton = () => {
         <option value="INCOMPLETE">Incomplete</option>
       </select>
 
-      {/* Mark All Completed Button */}
+      
       <button
         onClick={() => dispatch(markAllCompleted())}
         className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"

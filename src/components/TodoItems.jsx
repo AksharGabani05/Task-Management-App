@@ -3,24 +3,24 @@ import { markCompleted, markInCompleted, removeTodo, toggleTodo } from "../Redux
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import { FaTrash, FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import { toast } from "react-toastify"; // Import the toast function
-import 'react-toastify/dist/ReactToastify.css'; // Import the Toastify styles
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const TodoItems = ({ todo, index }) => {
   const dispatch = useDispatch();
 
   const handleRemoveTodo = () => {
-    toast.error("Task has been removed!");  // Show a toast when removing the task
-    dispatch(removeTodo(index)); // Dispatch the action to remove the todo
+    toast.error("Task has been removed!");  k
+    dispatch(removeTodo(index)); 
   };
 
   const handleToggleTodo = () => {
     if (todo.completed) {
-      toast.info("Task marked as Incomplete!"); // Toast when marking as Incomplete
+      toast.info("Task marked as Incomplete!"); 
     } else {
-      toast.success("Task marked as Completed!"); // Toast when marking as Completed
+      toast.success("Task marked as Completed!");
     }
-    dispatch(toggleTodo(index)); // Toggle the completion state of the todo
+    dispatch(toggleTodo(index)); 
   };
 
   return (
@@ -33,13 +33,13 @@ const TodoItems = ({ todo, index }) => {
       </div>
       <div className="flex space-x-3 ml-8">
         <button
-          onClick={handleToggleTodo} // Use the new toggle handler
+          onClick={handleToggleTodo} 
           className="mr-2 text-sm bg-blue-500 text-white sm:px-2 py-1 px-1 rounded"
         >
           {todo.completed ? <BsToggle2Off /> : <BsToggle2On />}
         </button>
         <button
-          onClick={handleRemoveTodo} // Use the remove handler
+          onClick={handleRemoveTodo} 
           className="mr-2 text-sm bg-red-500 text-white sm:px-2 px-1 py-1 rounded"
         >
           <FaTrash />

@@ -18,23 +18,23 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    // Validate that password is not empty
+    
     if (!formData.password) {
       toast.error("Password cannot be empty!");
       return;
     }
 
-    // Retrieve users from localStorage
+    
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const isEmailTaken = users.some((user) => user.email === formData.email);
 
-    // Check if email is already registered
+    
     if (isEmailTaken) {
       toast.error("Email already registered!");
       return;
     }
 
-    // Add new user to the list and save to localStorage
+    
     users.push({
       email: formData.email,
       password: formData.password,
@@ -42,7 +42,7 @@ const Signup = () => {
 
     localStorage.setItem("users", JSON.stringify(users));
     toast.success("Signup successful!", {
-      onClose: () => navigate("/login"), // Redirect to login page after success
+      onClose: () => navigate("/login"), 
     });
   };
 

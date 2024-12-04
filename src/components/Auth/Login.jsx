@@ -29,9 +29,9 @@ const Login = () => {
       return;
     }
 
-    // Show success toast and redirect
+    
     toast.success("Login successful!", {
-      onClose: () => navigate("/todo"), // Redirect after toast closes
+      onClose: () => navigate("/todo"), 
     });
   };
 
@@ -76,7 +76,7 @@ const Login = () => {
             className="text-red-600 hover:underline"
             onClick={(e) => {
               e.preventDefault();
-              navigate("/"); // Navigate to the register page
+              navigate("/"); 
             }}
           >
             Register here

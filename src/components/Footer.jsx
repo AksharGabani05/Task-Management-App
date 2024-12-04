@@ -7,7 +7,7 @@ const Footer = () => {
         <p>
           Created by <span className="font-bold">Akshar Gabani</span> - Task Management App |{" "}
           <a
-            href="https://github.com/AksharGabani05" // Replace with your GitHub profile link
+            href="https://github.com/AksharGabani05" 
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:text-blue-600"

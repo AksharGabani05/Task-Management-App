@@ -6,14 +6,14 @@ import { BsSearch } from "react-icons/bs";
 import FilterButton from "../FilterButton";
 import List from "./List";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import ToastContainer styles
+import "react-toastify/dist/ReactToastify.css"; 
 
 const Todo = () => {
   const dispatch = useDispatch();
   const [todoText, setTodoText] = useState("");
   const [searchText, setSearchText] = useState("");
 
-  // Manually created tasks
+  
   const initialTasks = [
     "Complete React project",
     "Write unit tests",
@@ -35,7 +35,7 @@ const Todo = () => {
     if (todoText.trim() !== "") {
       handleAddTodo(todoText.trim());
       setTodoText("");
-      toast.success("Task Added Successfully!"); // Show success toast when todo is added
+      toast.success("Task Added Successfully!"); 
     }
   };
 
@@ -44,7 +44,7 @@ const Todo = () => {
     dispatch(updateSearchTodo(value));
   };
 
-  // Dispatching initial tasks on component mount
+  
   useEffect(() => {
     initialTasks.forEach((task) => {
       handleAddTodo(task);
@@ -94,7 +94,7 @@ const Todo = () => {
       </div>
       <List />
 
-      {/* Toast Container */}
+      
       <ToastContainer
         position="top-right"
         autoClose={3000}
